@@ -1,6 +1,8 @@
 @isTest
 public class TestRestrictCarQuantity {
     @isTest static void TestAddedCarQuantityWithNumberBelowZero(){
+
+        // Michal please check tests
         
         Account acct = new Account (Name = 'Test Account');
         
