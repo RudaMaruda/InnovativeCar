@@ -1,8 +1,5 @@
 @isTest
 public class TestCarPostingNew1 {
-
-    // Michal please check tests
-
     
     @isTest static void TestCarPostingWithFewPsyhicalOffer(){
         
