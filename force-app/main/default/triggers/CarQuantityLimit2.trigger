@@ -1,5 +1,7 @@
 trigger CarQuantityLimit2 on Car_Posting__c (before insert) {
     
+
+    // Michal please check this trigger
     
     List<Id> listId = new List<Id>();
     for (Car_Posting__c c : Trigger.new){
