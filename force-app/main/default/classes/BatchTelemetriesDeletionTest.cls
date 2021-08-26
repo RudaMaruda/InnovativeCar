@@ -1,61 +1,65 @@
+/**
+* @author name <malgorzata.krawczyk@accenture.com>
+* @date 26/08/2021
+* @description This class has test methods for the batch class
+**/
 @isTest
 public class BatchTelemetriesDeletionTest {
-    @isTest static void testBatchWhenInsertOldTelemetries () {
-        
-        
+
+     /**
+     * @author name <malgorzata.krawczyk@accenture.com>
+     * @date 26/08/2021
+     * @description This test checks if telemetry data older than 2 days will be deleted
+     **/
+    @isTest
+    static void testBatchWhenInsertOldTelemetries () {
         Datetime dayBeforeYesterday = Datetime.now().addDays(-2);
-        List<Telemetry__c> lst_telemetries = TestTelemetriesFactory.createTelemetryInsert(100,dayBeforeYesterday);
-        
-        System.debug('List with telemetries, size before deleted old records: '+lst_telemetries.size());
-        
+        List<Telemetry__c> telemetryList = TestTelemetriesFactory.createTelemetryInsert(100,dayBeforeYesterday);
+                     
         Test.startTest();
         ID BatchProcessdId = Database.executeBatch(new OldTelemetriesDeletion());
         Test.stopTest();
-        
-        
-        Integer expectedNumOfTelemetry = [SELECT COUNT() FROM Telemetry__c];
-        System.assertEquals(0, expectedNumOfTelemetry);   
+                
+        Integer expectedNumberOfTelemetry = [SELECT COUNT() FROM Telemetry__c];
+        System.assertEquals(0, expectedNumberOfTelemetry);   
     }
     
-    @isTest static void testBatchWhenInsertNewTelemetries () {
-        
-        
+     /**
+     * @author name <malgorzata.krawczyk@accenture.com>
+     * @date 26/08/2021
+     * @description This test checks if telemetry data created today will be deleted
+     **/
+    @isTest
+    static void testBatchWhenInsertNewTelemetries () {
         Datetime today = Datetime.now();
-        List<Telemetry__c> lst_telemetries = TestTelemetriesFactory.createTelemetryInsert(100,today);
-        
-        System.debug(lst_telemetries.size());
+        List<Telemetry__c> telemetryList = TestTelemetriesFactory.createTelemetryInsert(100,today);
         
         Test.startTest();
         ID BatchProcessdId = Database.executeBatch(new OldTelemetriesDeletion());
         Test.stopTest();
         
-        
-        Integer expectedNumOfTelemetry = [SELECT COUNT() FROM Telemetry__c];
-        System.assertEquals(100, expectedNumOfTelemetry);   
+        Integer expectedNumberOfTelemetry = [SELECT COUNT() FROM Telemetry__c];
+        System.assertEquals(100, expectedNumberOfTelemetry);   
     }
     
-    @isTest static void testBatchWhenInsertNewAndOldTelemetries () {
-        
-        
+    /**
+     * @author name <malgorzata.krawczyk@accenture.com>
+     * @date 26/08/2021
+     * @description This test checks if telemetry data created today and 2 days ago will be deleted
+     **/
+    @isTest
+    static void testBatchWhenInsertNewAndOldTelemetries () {
         Datetime today = Datetime.now();
         Datetime dayBeforeYesterday = Datetime.now().addDays(-2);
         
-        List<Telemetry__c> lst_telemetriesNew = TestTelemetriesFactory.createTelemetryInsert(70,today);
-        List<Telemetry__c> lst_telemetriesOld = TestTelemetriesFactory.createTelemetryInsert(20,dayBeforeYesterday);
-        
-        List<Telemetry__c> lst_telemetriesAll = [SELECT id FROM Telemetry__c];
-        
-        System.debug('Old and new telemetries list size: '+lst_telemetriesAll.size());
-        
+        List<Telemetry__c> telemetryListTodayCreated = TestTelemetriesFactory.createTelemetryInsert(70,today);
+        List<Telemetry__c> telemetryLIstOldCreated = TestTelemetriesFactory.createTelemetryInsert(20,dayBeforeYesterday);  
+                   
         Test.startTest();
         ID BatchProcessdId = Database.executeBatch(new OldTelemetriesDeletion());
         Test.stopTest();
-        
-        
-        Integer expectedNumOfTelemetry = [SELECT COUNT() FROM Telemetry__c];
-        System.assertEquals(70, expectedNumOfTelemetry);   
-    }
-    
-    
-    
+                
+        Integer expectedNumberOfTelemetry = [SELECT COUNT() FROM Telemetry__c];
+        System.assertEquals(70, expectedNumberOfTelemetry);   
+    } 
 }

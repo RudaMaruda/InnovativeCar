@@ -1,6 +1,11 @@
 trigger CarsDealershipTrOld on CarsDealership__c (after update) {
     
-    // this trigger is inactive and must be changed
+    /**
+     * @author name <malgorzata.krawczyk@accenture.com>
+     * @date 26/08/2021
+     * @description This trigger is inactive and need to be changed
+     **/
+
     
     List<Id> listId = new List<Id>();
     for (CarsDealership__c c : Trigger.old){

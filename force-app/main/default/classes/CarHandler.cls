@@ -1,32 +1,33 @@
+/**
+* @author name <malgorzata.krawczyk@accenture.com>
+* @date 26/08/2021
+* @description This class contains business logic for car triggers
+**/
 public class CarHandler {
-    
-    
-    // this method have to be changed
-    public static void carDeletion(List<Car__c> carList1){
-        
-        List<ReviewCarDeletion__c> newReview = new List<ReviewCarDeletion__c>();
-        
-        for (Car__c c :carList1){
-            ReviewCarDeletion__c rcd = new ReviewCarDeletion__c(Name='Raport '+c.Name);
-            
-            rcd.ReportDeletion__c = 'Deletion car with name '+c.Name +' with brand '+c.Brand__c;
-            newReview.add(rcd);
-            
-            
+
+    /**
+     * @author name <malgorzata.krawczyk@accenture.com>
+     * @date 26/08/2021
+     * @description The method creates a new ReviewCarDeletion object that will keep data about deleted cars
+     **/
+    public static void carDeletion(List<Car__c> carList) {
+
+        if(carList.isEmpty()) {
+            return;
         }
+            List<ReviewCarDeletion__c> reviewList = new List<ReviewCarDeletion__c>();
         
-        
-        if(newReview.size()>0){
-            
-            insert newReview;
-            
-        }
-        
-        
-        
-        
-    }
-    
-    
-    
+            for (Car__c car :carList) {
+                String nameReviewCarDeletion = 'Raport ';
+                ReviewCarDeletion__c reviewCarDeletion = new ReviewCarDeletion__c( Name = nameReviewCarDeletion + car.Name);
+                String prefixForReport = 'Deletion car with name ';
+                String textReportDeletion = prefixForReport + car.Name;
+                reviewCarDeletion.ReportDeletion__c = textReportDeletion;
+                reviewList.add(reviewCarDeletion);
+            }
+     
+            if(reviewList.size() > 0) {
+              insert reviewList; 
+            }  
+    }   
 }
