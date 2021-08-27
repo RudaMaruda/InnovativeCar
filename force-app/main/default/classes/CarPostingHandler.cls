@@ -19,16 +19,25 @@ public class CarPostingHandler {
         String typePhysical = 'Physical';
         List<Car_Posting__c> carPostingPhysicalList = [Select Id,Car__c, Type__c from Car_Posting__c where Type__c =: typePhysical];
         List<id> idList = new List<Id>();
+
+        List<Car_Posting__c> carPostingPhysicalListNew = new List<Car_Posting__c>();
         
         for (Car_Posting__c carPosting : carPostingPhysicalList) {
             idList.add(carPosting.Car__c);
         }
         
         for (Car_Posting__c carPosting : carPostingList) {
+            String errorMessage = 'Only one physical offer could exist for this car!';
             Id carId = carPosting.Car__c;
             if(idList.contains(carId) && carPosting.Type__c == typePhysical) {
-                String errorMessage = 'Only one physical offer could exist for this car!';
                 carPosting.addError(errorMessage);
+            }
+            if(carPosting.Type__c == typePhysical && carPostingPhysicalListNew.contains(carPosting)){
+                carPosting.addError(errorMessage);
+            }
+
+            if(carPosting.Type__c == typePhysical){
+                carPostingPhysicalListNew.add(carPosting);
             }
         } 
     }

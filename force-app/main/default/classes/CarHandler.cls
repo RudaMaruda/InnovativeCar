@@ -16,6 +16,7 @@ public class CarHandler {
             return;
         }
             List<ReviewCarDeletion__c> reviewList = new List<ReviewCarDeletion__c>();
+            List<Id> carIdList = new List<Id>();
         
             for (Car__c car :carList) {
                 String nameReviewCarDeletion = 'Raport ';
@@ -24,7 +25,21 @@ public class CarHandler {
                 String textReportDeletion = prefixForReport + car.Name;
                 reviewCarDeletion.ReportDeletion__c = textReportDeletion;
                 reviewList.add(reviewCarDeletion);
+                carIdList.add(car.id);
             }
+            
+            /**
+            * @author name <malgorzata.krawczyk@accenture.com>
+            * @date 27/08/2021 Added telemetry list which should be deleted with deleted cars
+            * @description 
+            **/
+            List<Telemetry__c> telemetriesToDeleteList = new List<Telemetry__c>(
+                [Select id,Name,Car__c from Telemetry__c where Car__c =: carIdList]
+            );
+
+            if(telemetriesToDeleteList.size() > 0) {
+                delete telemetriesToDeleteList;
+              }
      
             if(reviewList.size() > 0) {
               insert reviewList; 

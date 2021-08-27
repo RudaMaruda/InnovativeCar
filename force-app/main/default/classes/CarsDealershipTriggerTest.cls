@@ -12,17 +12,11 @@ public class CarsDealershipTriggerTest {
      **/
     @isTest
     static void testAddedCarQuantityWithNumberBelowZero(){
-        Account account = new Account (Name = 'Test Account');
+        Account account = AccountFactory.getSimpleAccount();
         insert account;
         
-        CarsDealership__c carsDealership = new CarsDealership__c(Name = 'Test CarsDealership',
-                                                            Cars_Dealership_City__c = 'Test City',
-                                                            Car_Type__c = 'passenger car',
-                                                            Account__c = account.Id,
-                                                            Cars_Dealership_Street__c = 'Test Street',
-                                                            Cars_Dealership_Street_Number__c = 10,
-                                                            Dealership_Website__c = 'www.test.com',
-                                                            Car_Quantity__c = -5);
+        CarsDealership__c carsDealership = CarsDealershipFactory.createSimpleCarsDealership(account.id);
+        carsDealership.Car_Quantity__c = -5;
         
         Test.startTest();
         Database.SaveResult result = Database.insert(carsDealership, false);
@@ -41,17 +35,11 @@ public class CarsDealershipTriggerTest {
      **/
     @isTest
     static void testAddedCarQuantityWithNumberIsZero(){
-        Account account = new Account (Name = 'Test Account');
+        Account account = AccountFactory.getSimpleAccount();
         insert account;
         
-        CarsDealership__c carsDealership = new CarsDealership__c(Name = 'Test CarsDealership',
-                                                            Cars_Dealership_City__c = 'Test City',
-                                                            Car_Type__c = 'passenger car',
-                                                            Account__c = account.Id,
-                                                            Cars_Dealership_Street__c = 'Test Street',
-                                                            Cars_Dealership_Street_Number__c = 10,
-                                                            Dealership_Website__c = 'www.test.com',
-                                                            Car_Quantity__c = 0);
+        CarsDealership__c carsDealership = CarsDealershipFactory.createSimpleCarsDealership(account.id);
+        carsDealership.Car_Quantity__c = 0;
         
         Test.startTest();
         Database.SaveResult result = Database.insert(carsDealership, false);
