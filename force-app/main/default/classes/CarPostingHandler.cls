@@ -1,23 +1,27 @@
 /**
-* @author name <malgorzata.krawczyk@accenture.com>
+* @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
 * @date 26/08/2021
 * @description This class contains business logic for carPosting triggers
 **/
 public class CarPostingHandler {
 
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description The method checks whether the added car offer already exists
+     * @Task: Task 4
+     * @param carPostingList List with car postings 
      **/
     public static void addCarPostingPhysical(List<Car_Posting__c> carPostingList){
         
         if(carPostingList.isEmpty()) {
+            System.debug(LoggingLevel.ERROR,Constants.ERROR_ENTRY_PARAMETR_NULL);
             return;
         }
 
-        String typePhysical = 'Physical';
-        List<Car_Posting__c> carPostingPhysicalList = [Select Id,Car__c, Type__c from Car_Posting__c where Type__c =: typePhysical];
+        List<Car_Posting__c> carPostingPhysicalList = [Select Id,Car__c, Type__c 
+                                                      From Car_Posting__c
+                                                      Where Type__c =: Constants.CAR_POSTING_TYPE_PHYSICAL];
         List<id> idList = new List<Id>();
 
         List<Car_Posting__c> carPostingPhysicalListNew = new List<Car_Posting__c>();
@@ -27,30 +31,32 @@ public class CarPostingHandler {
         }
         
         for (Car_Posting__c carPosting : carPostingList) {
-            String errorMessage = 'Only one physical offer could exist for this car!';
             Id carId = carPosting.Car__c;
-            if(idList.contains(carId) && carPosting.Type__c == typePhysical) {
-                carPosting.addError(errorMessage);
+            if(idList.contains(carId) && carPosting.Type__c == Constants.CAR_POSTING_TYPE_PHYSICAL) {
+                carPosting.addError(Constants.ERROR_EXIST_PHYSICAL_OFFER);
             }
-            if(carPosting.Type__c == typePhysical && carPostingPhysicalListNew.contains(carPosting)){
-                carPosting.addError(errorMessage);
+            if(carPosting.Type__c == Constants.CAR_POSTING_TYPE_PHYSICAL && carPostingPhysicalListNew.contains(carPosting)){
+                carPosting.addError(Constants.ERROR_EXIST_PHYSICAL_OFFER);
             }
 
-            if(carPosting.Type__c == typePhysical){
+            if(carPosting.Type__c == Constants.CAR_POSTING_TYPE_PHYSICAL){
                 carPostingPhysicalListNew.add(carPosting);
             }
         } 
     }
     
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description The method checks whether the number of added offers for the car dealership does not exceed
      * the allowable amount specified by the dealership
+     * @Task: Task 4
+     * @param carPostingList List with car postings
      **/
     public static void addCarPostingLimit(List<Car_Posting__c> carPostingList){
 
         if(carPostingList.isEmpty()) {
+            System.debug(LoggingLevel.ERROR,Constants.ERROR_ENTRY_PARAMETR_NULL);
             return;
         }
 
@@ -73,36 +79,36 @@ public class CarPostingHandler {
                     Decimal carQuantity = carsDealershipIdWithCarQuantityMap.get(carsDealershipId).Car_Quantity__c;
                     Decimal carPostingCount = carsDealershipIdWithCarPostingMap.get(carsDealershipId).Car_Postings__r.size();
                     if(carQuantity<(carPostingCount + 1)) {
-                        String errorMessage = 'Available only car quantity: ';
-                        carPosting.AddError(errorMessage + carQuantity);
+                        carPosting.AddError(Constants.ERROR_AVAILABLE_CAR_QUANTITY + carQuantity);
                     }
                 }           
             }  
     }
     
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description The method sends an email to the sales director when there are new offers in the car dealership
+     * @Task: Task 4
+     * @param carPostingList List with car postings
      **/
     public static void sendEmailSalesDirector(List<Car_Posting__c> carPostingList){
         
         if(carPostingList.isEmpty()) {
+            System.debug(LoggingLevel.ERROR,Constants.ERROR_ENTRY_PARAMETR_NULL);
             return;
         }
         
-        String nameRole = 'Director, Direct Sales';
-        UserRole userRole = [SELECT Id FROM UserRole WHERE Name =: nameRole LIMIT 1];
+        List<UserRole> userRoleList = new List<UserRole>([SELECT Id FROM UserRole WHERE Name =: Constants.ROLE_NAME]);
+        UserRole userRole = userRoleList.get(0);
         User userDirector = [SELECT Id, Name, UserRoleId, email FROM User where UserRoleId =:userRole.id LIMIT 1];
         String emailUserDirector = userDirector.email;
-        String subject = 'Information about new car postings';
         String body = '';
         
         for(Car_Posting__c carPosting : carPostingList){ 
-            String carPostingInfo = ' New carPosting with name was added: ';
-            body = body + carPostingInfo + carPosting.Name;
+            body = body + Constants.INFO_CAR_POSTING_EMAIL + carPosting.Name;
         }
         
-        SendEmailFutureClass.sendEmailToSalesDirector(emailUserDirector,subject,body);
+        SendEmailFutureClass.sendEmailToSalesDirector(emailUserDirector,Constants.SUBJECT_CAR_POSTING_EMAIL,body);
     }  
 }

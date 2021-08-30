@@ -1,13 +1,14 @@
 /**
-* @author name <malgorzata.krawczyk@accenture.com>
+* @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
 * @date 26/08/2021
 * @description This class implements Batchable and applies to data that was created the day before yesterday
+* @Task: Task 5
 **/
-public class OldTelemetriesDeletion implements Database.Batchable<sObject>, Database.Stateful{
+public class OldTelemetriesDeletionBatch implements Database.Batchable<sObject>, Database.Stateful{
     Datetime dateTimeDeletion = Datetime.now().addDays(-1);
     
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This method searches for lists of telemetry data that were created later than yesterday
      **/
@@ -17,7 +18,7 @@ public class OldTelemetriesDeletion implements Database.Batchable<sObject>, Data
     }
     
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This method deletes the found old telemetry data
      **/

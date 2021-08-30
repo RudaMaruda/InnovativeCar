@@ -1,15 +1,18 @@
 /**
-* @author name <malgorzata.krawczyk@accenture.com>
+* @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
 * @date 26/08/2021
 * @description This class creates car records with specific parameters
 **/
 @isTest
 public class CarFactory {
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This method creates a certain number of car records and
      * saves them in the database
+     * @Task: Task 4
+     * @param numberCars The number of cars that will be generated 
+     * @return List<Car__c> List with cars with the specified parameters
      **/
     public static List<Car__c> createCarInsert(Integer numberCars){
         List<Car__c> carList = new List<Car__c>();
@@ -36,9 +39,11 @@ public class CarFactory {
     }
 
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 27/08/2021
      * @description This method creates one car record
+     * @Task: Task 4 
+     * @return Car__c One car with the specified parameters
      **/
     public static Car__c createSimpleCar(){
         

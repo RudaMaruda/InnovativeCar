@@ -1,7 +1,8 @@
 /**
-* @author name <malgorzata.krawczyk@accenture.com>
+* @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
 * @date 26/08/2021
 * @description This trigger applies to tasks performed for car posting
+* @Task: Task 4
 **/
 trigger CarPostingTrigger on Car_Posting__c (before insert,after insert, before update) {
     if(Trigger.isBefore){

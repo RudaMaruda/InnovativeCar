@@ -1,12 +1,12 @@
 /**
-* @author name <malgorzata.krawczyk@accenture.com>
+* @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
 * @date 26/08/2021
 * @description This class is responsible for sending the e-mail
 **/
 public class EmailClass {
 
   /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This method sends an email with the specified parameters
      **/  
@@ -14,8 +14,7 @@ public class EmailClass {
        
      Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();    
      mail.setToAddresses(new string[] {adressEmail});  
-     String senderDisplayName = 'Email';
-     mail.setSenderDisplayName(senderDisplayName);  
+     mail.setSenderDisplayName(Constants.SENDER_DISPLAY);  
      mail.setSubject(subject);  
      mail.setHtmlBody(body); 
        

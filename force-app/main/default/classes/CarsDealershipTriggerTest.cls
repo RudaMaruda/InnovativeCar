@@ -1,14 +1,15 @@
 /**
-* @author name <malgorzata.krawczyk@accenture.com>
+* @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
 * @date 26/08/2021
 * @description This class has test methods for the car dealership 
 **/
 @isTest
 public class CarsDealershipTriggerTest {
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This test checks if it is possible to add car quantity below zero
+     * @Task: Task 4
      **/
     @isTest
     static void testAddedCarQuantityWithNumberBelowZero(){
@@ -24,14 +25,14 @@ public class CarsDealershipTriggerTest {
         
         System.assert(!result.isSuccess());
         System.assert(result.getErrors().size() > 0);
-        String errorMessage = 'Car Quantity must be above 0!';
-        System.assertEquals(errorMessage,result.getErrors()[0].getMessage());    
+        System.assertEquals(Constants.ERROR_CAR_DEALERSHIP_CAR_QUANTITY,result.getErrors()[0].getMessage());    
     }
     
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This test checks if it is possible to add car quantity equal to zero
+     * @Task: Task 4
      **/
     @isTest
     static void testAddedCarQuantityWithNumberIsZero(){
@@ -47,7 +48,6 @@ public class CarsDealershipTriggerTest {
         
         System.assert(!result.isSuccess());
         System.assert(result.getErrors().size() > 0);
-        String errorMessage = 'Car Quantity must be above 0!';
-        System.assertEquals(errorMessage,result.getErrors()[0].getMessage());  
+        System.assertEquals(Constants.ERROR_CAR_DEALERSHIP_CAR_QUANTITY,result.getErrors()[0].getMessage());  
     }
 }

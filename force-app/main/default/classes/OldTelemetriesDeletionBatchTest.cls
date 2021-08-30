@@ -1,20 +1,21 @@
 /**
-* @author name <malgorzata.krawczyk@accenture.com>
+* @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
 * @date 26/08/2021
 * @description This class has test methods for the batch class
+* @Task: Task 5
 **/
 @isTest
-public class BatchTelemetriesDeletionTest {
+public class OldTelemetriesDeletionBatchTest {
 
      /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This test checks if telemetry data older than 2 days will be deleted
      **/
     @isTest
     static void testBatchWhenInsertOldTelemetries () {
         Datetime dayBeforeYesterday = Datetime.now().addDays(-2);
-        List<Telemetry__c> telemetryList = TestTelemetriesFactory.createTelemetryInsert(100,dayBeforeYesterday);
+        List<Telemetry__c> telemetryList = TelemetriesFactory.createTelemetryInsert(100,dayBeforeYesterday);
                      
         Test.startTest();
         ID BatchProcessdId = Database.executeBatch(new OldTelemetriesDeletion());
@@ -25,14 +26,14 @@ public class BatchTelemetriesDeletionTest {
     }
     
      /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This test checks if telemetry data created today will be deleted
      **/
     @isTest
     static void testBatchWhenInsertNewTelemetries () {
         Datetime today = Datetime.now();
-        List<Telemetry__c> telemetryList = TestTelemetriesFactory.createTelemetryInsert(100,today);
+        List<Telemetry__c> telemetryList = TelemetriesFactory.createTelemetryInsert(100,today);
         
         Test.startTest();
         ID BatchProcessdId = Database.executeBatch(new OldTelemetriesDeletion());
@@ -43,7 +44,7 @@ public class BatchTelemetriesDeletionTest {
     }
     
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This test checks if telemetry data created today and 2 days ago will be deleted
      **/
@@ -52,8 +53,8 @@ public class BatchTelemetriesDeletionTest {
         Datetime today = Datetime.now();
         Datetime dayBeforeYesterday = Datetime.now().addDays(-2);
         
-        List<Telemetry__c> telemetryListTodayCreated = TestTelemetriesFactory.createTelemetryInsert(70,today);
-        List<Telemetry__c> telemetryLIstOldCreated = TestTelemetriesFactory.createTelemetryInsert(20,dayBeforeYesterday);  
+        List<Telemetry__c> telemetryListTodayCreated = TelemetriesFactory.createTelemetryInsert(70,today);
+        List<Telemetry__c> telemetryLIstOldCreated = TelemetriesFactory.createTelemetryInsert(20,dayBeforeYesterday);  
                    
         Test.startTest();
         ID BatchProcessdId = Database.executeBatch(new OldTelemetriesDeletion());

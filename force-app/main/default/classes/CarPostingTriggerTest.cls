@@ -1,5 +1,5 @@
 /**
-* @author name <malgorzata.krawczyk@accenture.com>
+* @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
 * @date 26/08/2021
 * @description This class has test methods for the car posting triggers
 **/
@@ -7,13 +7,13 @@
 public class CarPostingTriggerTest {
 
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This test checks if it is possible to add two physical offers for the same car
+     * @Task: Task 4
      **/
     @isTest
     static void testCarPostingWithFewPsyhicalOfferForOneCar(){
-        String typePhysical = 'Physical';
         Account account = AccountFactory.getSimpleAccount();
         insert account;
 
@@ -23,10 +23,10 @@ public class CarPostingTriggerTest {
         Car__c car = CarFactory.createSimpleCar();
         insert car;
 
-        Car_Posting__c carPosting1 = TestCarPostingFactory.createSimpleCarPosting(car.id,carsDealership.id,typePhysical);
+        Car_Posting__c carPosting1 = CarPostingFactory.createSimpleCarPosting(car.id,carsDealership.id,Constants.CAR_POSTING_TYPE_PHYSICAL);
         insert carPosting1;
         
-        Car_Posting__c carPosting2 = TestCarPostingFactory.createSimpleCarPosting(car.id,carsDealership.id,typePhysical);
+        Car_Posting__c carPosting2 = CarPostingFactory.createSimpleCarPosting(car.id,carsDealership.id,Constants.CAR_POSTING_TYPE_PHYSICAL);
         
 
         Test.startTest();
@@ -38,14 +38,13 @@ public class CarPostingTriggerTest {
     }
 
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This test checks if it is possible to add a physical and virtual offer for the same car
+     * @Task: Task 4
      **/
     @isTest
     static void testCarPostingWithAddOnePsyhicalOfferForOneCar(){
-        String typePhysical = 'Physical';
-        String typeVirtual = 'Virtual';
         Account account = AccountFactory.getSimpleAccount();
         insert account;
 
@@ -55,10 +54,10 @@ public class CarPostingTriggerTest {
         Car__c car = CarFactory.createSimpleCar();
         insert car;
 
-        Car_Posting__c carPosting1 = TestCarPostingFactory.createSimpleCarPosting(car.id,carsDealership.id,typeVirtual);
+        Car_Posting__c carPosting1 = CarPostingFactory.createSimpleCarPosting(car.id,carsDealership.id,Constants.CAR_POSTING_TYPE_VIRTUAL);
         insert carPosting1;
         
-        Car_Posting__c carPosting2 = TestCarPostingFactory.createSimpleCarPosting(car.id,carsDealership.id,typePhysical);
+        Car_Posting__c carPosting2 = CarPostingFactory.createSimpleCarPosting(car.id,carsDealership.id,Constants.CAR_POSTING_TYPE_PHYSICAL);
 
         Test.startTest();
         Database.SaveResult result = Database.insert(carPosting2, false);
@@ -69,14 +68,13 @@ public class CarPostingTriggerTest {
     }
 
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This test checks if it is possible to add the number of offers above the limit for the car dealership
+     * @Task: Task 4
      **/
     @isTest
     static void TestCarQuantityLimitCarPostingWithOveralQuantity(){ 
-        String typePhysical = 'Physical';
-        String typeVirtual = 'Virtual';
         Account account = AccountFactory.getSimpleAccount();
         insert account;
         
@@ -94,9 +92,9 @@ public class CarPostingTriggerTest {
         carList.add(car2);
         insert carList;
         
-        Car_Posting__c carPosting1 = TestCarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,typePhysical);
-        Car_Posting__c carPosting2 = TestCarPostingFactory.createSimpleCarPosting(car2.id,carsDealership.id,typeVirtual);
-        Car_Posting__c carPosting3 = TestCarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,typeVirtual);
+        Car_Posting__c carPosting1 = CarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,Constants.CAR_POSTING_TYPE_PHYSICAL);
+        Car_Posting__c carPosting2 = CarPostingFactory.createSimpleCarPosting(car2.id,carsDealership.id,Constants.CAR_POSTING_TYPE_VIRTUAL);
+        Car_Posting__c carPosting3 = CarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,Constants.CAR_POSTING_TYPE_VIRTUAL);
         
         List<Car_Posting__c> carPostingList = new List<Car_Posting__c>();
         carPostingList.add(carPosting1);
@@ -104,7 +102,7 @@ public class CarPostingTriggerTest {
         carPostingList.add(carPosting3);
         insert carPostingList;
         
-        Car_Posting__c carPosting4 = TestCarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,typeVirtual);
+        Car_Posting__c carPosting4 = CarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,Constants.CAR_POSTING_TYPE_VIRTUAL);
         
         Test.startTest();
         Database.SaveResult result = Database.insert(carPosting4, false);
@@ -112,19 +110,17 @@ public class CarPostingTriggerTest {
         
         System.assert(!result.isSuccess());
         System.assert(result.getErrors().size() > 0);
-        String errorMessage = 'Available only car quantity: ';
-        System.assertEquals(errorMessage + carsDealership.Car_Quantity__c,result.getErrors()[0].getMessage());    
+        System.assertEquals(Constants.ERROR_AVAILABLE_CAR_QUANTITY + carsDealership.Car_Quantity__c,result.getErrors()[0].getMessage());    
     }
 
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This test checks if it is possible to add the number of offers below the limit for the car dealership
+     * @Task: Task 4
      **/
     @isTest
     static void TestCarQuantityLimitCarPostingWithCorrectQuantity(){
-        String typePhysical = 'Physical';
-        String typeVirtual = 'Virtual';
         Account account = AccountFactory.getSimpleAccount();
         insert account;
         
@@ -142,9 +138,9 @@ public class CarPostingTriggerTest {
         carList.add(car2);
         insert carList;
         
-        Car_Posting__c carPosting1 = TestCarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,typePhysical);
-        Car_Posting__c carPosting2 = TestCarPostingFactory.createSimpleCarPosting(car2.id,carsDealership.id,typeVirtual);
-        Car_Posting__c carPosting3 = TestCarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,typeVirtual);
+        Car_Posting__c carPosting1 = CarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,Constants.CAR_POSTING_TYPE_PHYSICAL);
+        Car_Posting__c carPosting2 = CarPostingFactory.createSimpleCarPosting(car2.id,carsDealership.id,Constants.CAR_POSTING_TYPE_VIRTUAL);
+        Car_Posting__c carPosting3 = CarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,Constants.CAR_POSTING_TYPE_VIRTUAL);
         
         List<Car_Posting__c> carPostingList = new List<Car_Posting__c>();
         carPostingList.add(carPosting1);
@@ -152,7 +148,7 @@ public class CarPostingTriggerTest {
         carPostingList.add(carPosting3);
         insert carPostingList;
         
-        Car_Posting__c carPosting4 = TestCarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,typeVirtual);
+        Car_Posting__c carPosting4 = CarPostingFactory.createSimpleCarPosting(car1.id,carsDealership.id,Constants.CAR_POSTING_TYPE_VIRTUAL);
         
         Test.startTest();
         Database.SaveResult result = Database.insert(carPosting4, false);
@@ -163,15 +159,13 @@ public class CarPostingTriggerTest {
     }
 
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
-     * @description This test checks if it is possible to add two physical offers for the same car
-     * with using factory
+     * @description This test checks if it is possible to add large physical offers and large virtual offers for the same car
+     * @Task: Task 4
      **/
     @isTest
     static void testCarPostingWithLargeAmountsPsyhicalCarPosting(){
-        String typePhysical = 'Physical';
-        String typeVirtual = 'Virtual';
         Account account = AccountFactory.getSimpleAccount();
         insert account;
               
@@ -183,9 +177,9 @@ public class CarPostingTriggerTest {
         insert carsDealershipFromFactory;
 
         List<Car_Posting__c> carPostingPhysicalList = 
-        TestCarPostingFactory.createCarPosting(120,car.Id,carsDealershipFromFactory.Id,typePhysical);
+        CarPostingFactory.createCarPosting(120,car.Id,carsDealershipFromFactory.Id,Constants.CAR_POSTING_TYPE_PHYSICAL);
         List<Car_Posting__c> carPostingVirtualList = 
-        TestCarPostingFactory.createCarPosting(20,car.Id,carsDealershipFromFactory.Id,typeVirtual);
+        CarPostingFactory.createCarPosting(20,car.Id,carsDealershipFromFactory.Id,Constants.CAR_POSTING_TYPE_VIRTUAL);
 
         Test.startTest();
         Database.SaveResult[] resultPhysicalList = Database.insert(carPostingPhysicalList, false);

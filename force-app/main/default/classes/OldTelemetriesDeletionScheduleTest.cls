@@ -1,13 +1,14 @@
 /**
-* @author name <malgorzata.krawczyk@accenture.com>
+* @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
 * @date 26/08/2021
 * @description This class has test methods for the scheduled classes
+* @Task: Task 5
 **/
 @isTest
-public class ScheduledTelemetriesDeletionTest {
+public class OldTelemetriesDeletionScheduleTest {
 
     /**
-     * @author name <malgorzata.krawczyk@accenture.com>
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description This test checks scheduled classes
      **/
@@ -20,14 +21,14 @@ public class ScheduledTelemetriesDeletionTest {
         System.assertEquals(0, jobsBefore.size(), message);
         
         Test.startTest();
-        ScheduledOldTelemetriesDeletion otd = new ScheduledOldTelemetriesDeletion();
+        OldTelemetriesDeletionSchedule otd = new OldTelemetriesDeletionSchedule();
         String jobId = System.schedule('jobName', cronExpr, otd);
         Test.stopTest();
         
         String jobTypeSchedule = 'ScheduledApex';
         String messageSchedule = 'expecting one scheduled job';
         String messageScheduleSpecific = 'expecting specific scheduled job';
-        String classScheduledName = 'ScheduledOldTelemetriesDeletion';
+        String classScheduledName = 'OldTelemetriesDeletionSchedule';
 
         List<AsyncApexJob> jobsScheduled = [select Id, ApexClassID, ApexClass.Name, Status, JobType from AsyncApexJob where JobType =: jobTypeSchedule];
         System.assertEquals(1, jobsScheduled.size(), messageSchedule);
@@ -36,7 +37,7 @@ public class ScheduledTelemetriesDeletionTest {
         String jobTypeBatch = 'BatchApex';
         String messageBatch = 'expecting one apex batch job';
         String messageBatchSpecific = 'expecting specific batch job';
-        String classBatchName = 'OldTelemetriesDeletion';
+        String classBatchName = 'OldTelemetriesDeletionBatch';
 
         List<AsyncApexJob> jobsApexBatch = [select Id, ApexClassID, ApexClass.Name, Status, JobType from AsyncApexJob where JobType =: jobTypeBatch];
         System.assertEquals(1, jobsApexBatch.size(), messageBatch);
