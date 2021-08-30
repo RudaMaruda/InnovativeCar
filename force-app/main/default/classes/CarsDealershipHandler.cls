@@ -35,16 +35,16 @@ public class CarsDealershipHandler {
      * @param carsDealershipNewList List with car dealerships to be updated
      **/
     public static void closeCarsDealership(List<CarsDealership__c> carsDealershipOldList,List<CarsDealership__c> carsDealershipNewList){
-        
-        for (CarsDealership__c carsDealershipOld : carsDealershipOldList){
-            if(carsDealershipOld.Dealership_Status__c == Constants.CAR_DEALERSHIP_STATUS_OPEN){
-                 
-                for (CarsDealership__c carsDealershipNew : carsDealershipNewList){
-                    if(carsDealershipNew.Dealership_Status__c == Constants.CAR_DEALERSHIP_STATUS_CLOSE && carsDealershipNew.id == carsDealershipOld.id ){
-                        AsyncCaseRenovation asyncCaseRenovation = new AsyncCaseRenovation(carsDealershipNew.id);
-                        Id jobID = System.enqueueJob(asyncCaseRenovation);   
-                    }
-                }
+        Map<Id,CarsDealership__c> carsDealershipIdWithStatusOpenMap = new Map<Id,CarsDealership__c>(
+            [Select Id, Dealership_Status__c 
+            From CarsDealership__c 
+            Where Id =: carsDealershipOldList AND
+            Dealership_Status__c =: Constants.CAR_DEALERSHIP_STATUS_OPEN]);
+
+        for (CarsDealership__c carsDealership : carsDealershipNewList){
+            if(carsDealershipIdWithStatusOpenMap.get(carsDealership.Id).Dealership_Status__c != null &&
+            carsDealership.Dealership_Status__c == Constants.CAR_DEALERSHIP_STATUS_CLOSE){
+                AsyncCaseRenovation asyncCaseRenovation = new AsyncCaseRenovation(carsDealership.id);
             }
         }
     }
