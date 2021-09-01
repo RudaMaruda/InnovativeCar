@@ -34,9 +34,8 @@ public class CarHandler {
             * @date 27/08/2021 Added telemetry list which should be deleted with deleted cars
             * @description 
             **/
-            List<Telemetry__c> telemetriesToDeleteList = new List<Telemetry__c>(
-                [Select id,Name,Car__c from Telemetry__c where Car__c =: carIdList]
-            );
+            List<Telemetry__c> telemetriesToDeleteList = 
+                [Select id,Name,Car__c from Telemetry__c where Car__c =: carIdList];
 
             if(telemetriesToDeleteList.size() > 0) {
                 delete telemetriesToDeleteList;

@@ -4,5 +4,6 @@
     "**/bower_components": true,
     "**/.sfdx": true
   },
-  "salesforcedx-vscode-apex.java.home": "C:\\Java\\jdk-11"
+  "salesforcedx-vscode-apex.java.home": "C:\\\\Java\\\\jdk-11",
+  "editor.accessibilityPageSize": 7
 }

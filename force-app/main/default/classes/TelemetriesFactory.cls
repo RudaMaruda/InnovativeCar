@@ -18,18 +18,33 @@ public class TelemetriesFactory {
      **/
     public static List<Telemetry__c> createTelemetryInsert(Integer numberTelemetries, DateTime CreatedDateTest){
         List<Telemetry__c> telemetryList = new List<Telemetry__c>();
-        Datetime dateTest = CreatedDateTest;
         
         for(Integer i = 0; i <  numberTelemetries ; i++) {
-            telemetryList.add(New Telemetry__c( Name = Constants.TELEMETRY_TEST_NAME + i));
+            Telemetry__c telemetry = TelemetriesFactory.createTelemetry();
+            telemetry.Name = telemetry.Name + i;
+            telemetryList.add(telemetry);
         }
         
         insert telemetryList;
         
         for (Telemetry__c telemetry : telemetryList){
-            Test.setCreatedDate(telemetry.id, dateTest);
+            Test.setCreatedDate(telemetry.id, CreatedDateTest);
         }
         
         return telemetryList;   
+    }
+
+    /**
+     * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
+     * @date 01/09/2021
+     * @description This method creates one telemetry with an assigned
+     * name
+     * @Task: Task 5
+     * @return Telemetry__c Telemetry object with test name
+     **/
+    public static Telemetry__c createTelemetry(){  
+        Telemetry__c telemetry = new Telemetry__c( Name = Constants.TELEMETRY_TEST_NAME);
+         
+        return telemetry;   
     }
 }

@@ -19,7 +19,7 @@ public class AsyncCaseRenovation implements Queueable {
      * @Task: Task 5
      **/
     public void execute (QueueableContext context){
-        List<CarsDealership__c> carsDealershipList = new List<CarsDealership__c>([Select Id, Name From CarsDealership__c Where Id =:carDealershipId]);
+        List<CarsDealership__c> carsDealershipList = [Select Id, Name From CarsDealership__c Where Id =:carDealershipId];
         
         if(carsDealershipList.isEmpty()){
             System.debug(LoggingLevel.ERROR,Constants.ERROR_ENTRY_PARAMETR_NULL);

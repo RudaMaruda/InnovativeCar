@@ -18,17 +18,11 @@ public class CarFactory {
         List<Car__c> carList = new List<Car__c>();
 
         for (Integer i = 0; i < numberCars; i++) {
-            Car__c car = new Car__c(Name = 'Test Car ' + i,
-                               VIN__c = '6774656TTR' + i,
-                                Brand__c = 'Brand' + i,
-                                Model__c = 'Model' + i,
-                                Condition__c = 'Saled',
-                                Price__c = 40000,
-                                Equipment__c = 'Test equipment',
-                                Power__c = 150,
-                                Capacity__c = 500,
-                                Combustion__c = 10,
-                                Car_Type_Available__c = 'sports car');
+            Car__c car = CarFactory.createSimpleCar();
+            car.Name = car.Name + i;
+            car.VIN__c = car.VIN__c + i;
+            car.Brand__c = car.Brand__c + i;
+            car.Model__c = car.Model__c + i;
             carList.add(car);
         }
         if(carList.size()>0){

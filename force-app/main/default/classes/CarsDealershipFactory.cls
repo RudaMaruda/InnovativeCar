@@ -20,13 +20,13 @@ public class CarsDealershipFactory {
         List<CarsDealership__c> carsDealershipList = new List<CarsDealership__c>();
 
         for (Integer i = 0; i < numberCarsDealership; i++) {
-            CarsDealership__c carsDealership = new CarsDealership__c(Name = 'Test CarsDealership '+ i,
-                                                            Cars_Dealership_City__c = 'Test City '+ i,
-                                                            Car_Type__c = 'passenger car',
-                                                            Account__c = accountId,
-                                                            Cars_Dealership_Street__c = 'Test Street '+ i,
-                                                            Cars_Dealership_Street_Number__c = (10 + i),
-                                                            Dealership_Website__c = 'www.test.com '+ i);
+
+            CarsDealership__c carsDealership = CarsDealershipFactory.createSimpleCarsDealership(accountId);
+            carsDealership.Name = carsDealership.Name + i;
+            carsDealership.Cars_Dealership_City__c = carsDealership.Cars_Dealership_City__c + i;
+            carsDealership.Cars_Dealership_Street__c = carsDealership.Cars_Dealership_Street__c + i;
+            carsDealership.Cars_Dealership_Street_Number__c = carsDealership.Cars_Dealership_Street_Number__c + i;
+
             carsDealershipList.add(carsDealership);
         }
 

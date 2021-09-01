@@ -99,7 +99,7 @@ public class CarPostingHandler {
             return;
         }
         
-        List<UserRole> userRoleList = new List<UserRole>([SELECT Id FROM UserRole WHERE Name =: Constants.ROLE_NAME]);
+        List<UserRole> userRoleList = [SELECT Id FROM UserRole WHERE Name =: Constants.ROLE_NAME];
         UserRole userRole = userRoleList.get(0);
         User userDirector = [SELECT Id, Name, UserRoleId, email FROM User where UserRoleId =:userRole.id LIMIT 1];
         String emailUserDirector = userDirector.email;
