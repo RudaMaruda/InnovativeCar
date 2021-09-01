@@ -89,7 +89,7 @@ public class CarPostingHandler {
      * @author Malgorzata Krawczyk <malgorzata.krawczyk@accenture.com>
      * @date 26/08/2021
      * @description The method sends an email to the sales director when there are new offers in the car dealership
-     * @Task: Task 4
+     * @Task: Task 5
      * @param carPostingList List with car postings
      **/
     public static void sendEmailSalesDirector(List<Car_Posting__c> carPostingList){

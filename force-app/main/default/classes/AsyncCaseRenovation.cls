@@ -20,6 +20,12 @@ public class AsyncCaseRenovation implements Queueable {
      **/
     public void execute (QueueableContext context){
         List<CarsDealership__c> carsDealershipList = new List<CarsDealership__c>([Select Id, Name From CarsDealership__c Where Id =:carDealershipId]);
+        
+        if(carsDealershipList.isEmpty()){
+            System.debug(LoggingLevel.ERROR,Constants.ERROR_ENTRY_PARAMETR_NULL);
+            return;
+        }
+        
         CarsDealership__c carsDealership = carsDealershipList.get(0);
         String subjectCase = Constants.SUBJECT_CASE_RENOVATION + carsDealership.Name;
 
@@ -33,7 +39,7 @@ public class AsyncCaseRenovation implements Queueable {
 
         Http server = new Http();
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('https://jsonplaceholder.typicode.com/posts');
+        request.setEndpoint('callout:Place_Holder_Posts');
         request.setMethod('POST');
         request.setBody(JSON.serialize(newCase)); 
         HttpResponse response = server.send(request);

@@ -13,7 +13,8 @@ public class AccountFactory {
      * @return Account One account with the specified name
      **/
     public static Account getSimpleAccount(){
-        Account account = new Account (Name = Constants.ACCOUNT_TEST_NAME);
+        Integer randomNumber = Integer.valueof((Math.random() * 100));
+        Account account = new Account (Name = Constants.ACCOUNT_TEST_NAME + randomNumber);
         return account;
     }
 
@@ -29,7 +30,7 @@ public class AccountFactory {
         List<Account> accountList = new List<Account>();
 
         for (Integer i = 0; i < numberAccounts; i++) {
-            Account account = new Account (Name = Constants.ACCOUNT_TEST_NAME + i); 
+            Account account = AccountFactory.getSimpleAccount(); 
             accountList.add(account);
         }
 
