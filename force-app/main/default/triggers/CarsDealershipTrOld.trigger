@@ -1,7 +1,12 @@
-trigger CarToWarehouse1 on CarsDealership__c (after update) {
+trigger CarsDealershipTrOld on CarsDealership__c (after update) {
     
+    /**
+     * @author name <malgorzata.krawczyk@accenture.com>
+     * @date 26/08/2021
+     * @description This trigger is inactive and need to be changed
+     **/
 
-    // Unfortunately this trigger doesnt work, Michal please check 
+    
     List<Id> listId = new List<Id>();
     for (CarsDealership__c c : Trigger.old){
         listId.add(c.Account__c);
@@ -33,9 +38,8 @@ trigger CarToWarehouse1 on CarsDealership__c (after update) {
         
         List<Car_Posting__c> carPostInWarehouse = new List <Car_Posting__c>();
         
-        // Relation: car dealership <- car posting -> car
+        // car dealership <- car posting -> car
         
-        // Here error appears
         List<Id> listIdCP = new List<Id>();
         for (Car_Posting__c cp : listCarPost){
             listIdCP.add(cp.Car__c);
